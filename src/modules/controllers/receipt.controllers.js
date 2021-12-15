@@ -24,3 +24,21 @@ module.exports.deleteReceipt = (req, res, next) => {
       .catch((err) => res.status(422).send(err));
   }
 };
+
+module.exports.updateReceipt = (req, res, next) => {
+  body = req.body;
+  const { id, text, cost } = body;
+  if (
+    ((text.trim().length && body.hasOwnProperty("text")) ||
+      (+cost && cost.trim().length)) &&
+    id.trim().length
+  ) {
+    Receipt.updateOne({ _id: id }, body)
+      .then((result) => {
+        res.send(result);
+      })
+      .catch((err) => {
+        res.send(err);
+      });
+  }
+};
