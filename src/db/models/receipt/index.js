@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
 const receiptSchema = new Schema({
-  name: String,
+  text: String,
   date: { type: Date, default: Date.now },
   cost: Number,
 });
