@@ -27,8 +27,8 @@ module.exports.deleteReceipt = (req, res, next) => {
 
 module.exports.updateReceipt = (req, res, next) => {
   body = req.body;
-  const { id, text, cost } = body;
-  if ((text.trim().length || +cost) && id.trim().length) {
+  const { id, text, cost, data } = body;
+  if ((text.trim().length || +cost) && (id.trim().length && data.trim().length)) {
     Receipt.updateOne({ _id: id }, body)
       .then((result) => {
         res.send(result);
