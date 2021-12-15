@@ -4,8 +4,7 @@ module.exports.addNewReceipt = (req, res, next) => {
   const { text, cost } = req.body;
   if (text.trim().length && +cost) {
     const receipt = new Receipt(req.body);
-    receipt
-      .save()
+    receipt.save()
       .then((result) => res.send(result))
       .catch((err) => res.send(err));
   } else res.status(422).send("Wrong data!");
