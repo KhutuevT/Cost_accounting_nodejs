@@ -1,0 +1,24 @@
+{
+  "name": "2.0_cost_accaunting_nodejs",
+  "version": "1.0.0",
+  "description": "2.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KhutuevT/Cost_accounting_nodejs.git"
+  },
+  "author": "Khutuev T",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KhutuevT/Cost_accounting_nodejs/issues"
+  },
+  "homepage": "https://github.com/KhutuevT/Cost_accounting_nodejs#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^6.1.2"
+  }
+}
