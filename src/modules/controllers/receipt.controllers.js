@@ -6,9 +6,11 @@ module.exports.addNewReceipt = (req, res, next) => {
   if (body.hasOwnProperty("text") && body.hasOwnProperty("cost")) {
     if (text.trim().length && +cost) {
       const receipt = new Receipt(req.body);
-      receipt.save()
-        .then((result) => res.send(result))
-        .catch((err) => res.send(err));
+      receipt.save().then((result) => {
+          return res.send(result);
+        }).catch((err) => {
+          return res.send(err);
+        });
     } else return res.status(422).send("Empty data in the fields!");
   } else return res.status(422).send("Some fields are missing!(text or cost)");
 };
@@ -25,18 +27,16 @@ module.exports.getAllReceipts = (req, res, next) => {
 
 module.exports.deleteReceipt = (req, res, next) => {
   const query = req.query;
-  if (query.hasOwnProperty("id")) {
-    if (query.id.trim().length) {
-      const id = req.query.id;
-      Receipt.deleteOne({ _id: id })
-        .then((result) => {
-          return res.send(result);
-        })
-        .catch((err) => {
-          return res.status(422).send(err);
-        });
-    } else return res.status(422).send("Id values ​​are empty!");
-  } else return res.status(422).send("No ID!");
+  if (query.hasOwnProperty("id") && query.id.trim().length) {
+    const id = req.query.id;
+    Receipt.deleteOne({ _id: id })
+      .then((result) => {
+        return res.send(result);
+      })
+      .catch((err) => {
+        return res.status(422).send(err);
+      });
+  } else return res.status(422).send("No valid ID!");
 };
 
 module.exports.updateReceipt = (req, res, next) => {
