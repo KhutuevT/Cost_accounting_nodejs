@@ -6,17 +6,15 @@ module.exports.addNewReceipt = (req, res, next) => {
   if ((body.hasOwnProperty("text") && text.trim().length) &&
     (body.hasOwnProperty("cost") && +cost)
   ) {
-    if (text.trim().length && +cost) {
-      const receipt = new Receipt(req.body);
-      receipt.save()
-        .then((result) => {
-          return res.send(result);
-        })
-        .catch((err) => {
-          return res.send(err);
-        });
-    } else return res.status(422).send("Empty data in the fields!");
-  } else return res.status(422).send("Some fields are missing!(text or cost)");
+    const receipt = new Receipt(req.body);
+    receipt.save()
+      .then((result) => {
+        return res.send(result);
+      })
+      .catch((err) => {
+        return res.send(err);
+      });
+  } else return res.status(422).send("Some fields are missing or not valid!(text or cost)");
 };
 
 module.exports.getAllReceipts = (req, res, next) => {
