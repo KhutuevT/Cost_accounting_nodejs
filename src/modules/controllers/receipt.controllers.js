@@ -1,40 +1,66 @@
 const Receipt = require("../../db/models/receipt/index");
 
 module.exports.addNewReceipt = (req, res, next) => {
-  const { text, cost } = req.body;
-  if (text.trim().length && +cost) {
-    const receipt = new Receipt(req.body);
-    receipt.save()
-      .then((result) => res.send(result))
-      .catch((err) => res.send(err));
-  } else res.status(422).send("Wrong data!");
+  const body = req.body;
+  const { text, cost } = body;
+  if (body.hasOwnProperty("text") && body.hasOwnProperty("cost")) {
+    if (text.trim().length && +cost) {
+      const receipt = new Receipt(req.body);
+      receipt.save()
+        .then((result) => res.send(result))
+        .catch((err) => res.send(err));
+    } else return res.status(422).send("Empty data in the fields!");
+  } else return res.status(422).send("Some fields are missing!(text or cost)");
 };
 
 module.exports.getAllReceipts = (req, res, next) => {
   Receipt.find()
-    .then((result) => res.send({ data: result }))
-    .catch((err) => res.status(422).send(err));
+    .then((result) => {
+      return res.send({ data: result });
+    })
+    .catch((err) => {
+      return res.status(422).send(err);
+    });
 };
 
 module.exports.deleteReceipt = (req, res, next) => {
-  if (req.query.id.trim().length) {
-    const id = req.query.id;
-    Receipt.deleteOne({ _id: id })
-      .then((result) => res.send(result))
-      .catch((err) => res.status(422).send(err));
-  } else res.status(422).send("Wrong data!");
+  const query = req.query;
+  if (query.hasOwnProperty("id")) {
+    if (query.id.trim().length) {
+      const id = req.query.id;
+      Receipt.deleteOne({ _id: id })
+        .then((result) => {
+          return res.send(result);
+        })
+        .catch((err) => {
+          return res.status(422).send(err);
+        });
+    } else return res.status(422).send("Id values ​​are empty!");
+  } else return res.status(422).send("No ID!");
 };
 
 module.exports.updateReceipt = (req, res, next) => {
-  body = req.body;
-  const { id, text, cost, data } = body;
-  if ((text.trim().length || +cost) && (id.trim().length && data.trim().length)) {
-    Receipt.updateOne({ _id: id }, body)
-      .then((result) => {
-        res.send(result);
-      })
-      .catch((err) => {
-        res.send(err);
-      });
-  } else res.status(422).send("Wrong data!");
+  const body = req.body;
+  const { id, text, cost, date } = body;
+  let sendObj = {};
+  if (body.hasOwnProperty("id")) {
+    if (body.hasOwnProperty("text") && text.trim().length) {
+      sendObj.text = text.trim();
+    }
+    if (body.hasOwnProperty("cost") && +cost) {
+      sendObj.cost = +cost;
+    }
+    if (body.hasOwnProperty("date") && date.trim().length) {
+      sendObj.date = date;
+    }
+    if (Object.keys(sendObj).length !== 0) {
+      Receipt.updateOne({ _id: id }, sendObj)
+        .then((result) => {
+          return res.send(result);
+        })
+        .catch((err) => {
+          return res.send(err);
+        });
+    } else return res.status(422).send("No valid data!");
+  } else return res.status(422).send("No ID!");
 };
