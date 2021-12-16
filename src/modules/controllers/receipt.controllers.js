@@ -3,12 +3,16 @@ const Receipt = require("../../db/models/receipt/index");
 module.exports.addNewReceipt = (req, res, next) => {
   const body = req.body;
   const { text, cost } = body;
-  if (body.hasOwnProperty("text") && body.hasOwnProperty("cost")) {
+  if ((body.hasOwnProperty("text") && text.trim().length) &&
+    (body.hasOwnProperty("cost") && +cost)
+  ) {
     if (text.trim().length && +cost) {
       const receipt = new Receipt(req.body);
-      receipt.save().then((result) => {
+      receipt.save()
+        .then((result) => {
           return res.send(result);
-        }).catch((err) => {
+        })
+        .catch((err) => {
           return res.send(err);
         });
     } else return res.status(422).send("Empty data in the fields!");
