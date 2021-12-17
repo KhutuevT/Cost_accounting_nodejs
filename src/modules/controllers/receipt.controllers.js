@@ -10,8 +10,7 @@ module.exports.addNewReceipt = (req, res, next) => {
     +cost
   ) {
     const receipt = new Receipt(req.body);
-    receipt
-      .save()
+    receipt.save()
       .then((result) => {
         return res.send(result);
       })
