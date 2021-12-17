@@ -76,7 +76,7 @@ module.exports.updateReceipt = (req, res, next) => {
 module.exports.allUserSpending = (req, res, next) => {
     Receipt.aggregate([{ $group: { _id: null, total: { $sum: "$cost" } } }])
       .then((result) => {
-        return res.send(result[0]);
+        return res.send(result.length ? result[0] : { total: 0});
       })
       .catch((err) => {
         return res.status(422).send(err);
