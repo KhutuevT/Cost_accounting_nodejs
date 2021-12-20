@@ -7,7 +7,7 @@ module.exports.addNewReceipt = (req, res, next) => {
     body.hasOwnProperty("text") &&
     text.trim().length &&
     body.hasOwnProperty("cost") &&
-    +cost
+    +cost && cost>0
   ) {
     const receipt = new Receipt(req.body);
     receipt.save()
@@ -55,7 +55,7 @@ module.exports.updateReceipt = (req, res, next) => {
     if (body.hasOwnProperty("text") && text.trim().length) {
       sendObj.text = text.trim();
     }
-    if (body.hasOwnProperty("cost") && +cost) {
+    if (body.hasOwnProperty("cost") && +cost && cost>0) {
       sendObj.cost = +cost;
     }
     if (body.hasOwnProperty("date") && date.trim().length) {
